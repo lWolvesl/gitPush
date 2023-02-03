@@ -1,8 +1,6 @@
-#include "stdio.h"
+#include <cstdio>
 #include "unistd.h"
-#include "string.h"
-#include <stdlib.h>
-#include <iostream>
+#include <cstring>
 
 using namespace std;
 
@@ -24,18 +22,23 @@ bool getAbsolutePath(char* absolutePath, const char *execName)
     return true;
 }
 
+
+
 int main(int argc, char *argv[])
 {
     char absolutePath[128];
     getAbsolutePath(absolutePath, argv[0]);
-    
-	char *ig = "/.gitignore";
 
-	strcat(absolutePath,ig);
+    char absolutePath1[128];
+    char absolutePath2[128];
 
-	int check = access(absolutePath,F_OK);
+    strcpy(absolutePath1,absolutePath);
+    strcpy(absolutePath2,absolutePath);
 
-    if(check == 0){
+    strcat(absolutePath1,"/.gitignore");
+    strcat(absolutePath2,"/.gitignore");
+
+    if(!access(absolutePath1,F_OK) || !access(absolutePath2,F_OK)){
 		system("git add .");
 		system("git commit -m 'git'");
 		system("git push all");
